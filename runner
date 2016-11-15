@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+[[ ! -z "$DEBUG" ]] && set -x
+trap "exit" INT
+
+[[ -z "$CURL_RETRY" ]] && CURL_RETRY="--retry 6 --retry-delay 10"
+
+[[ -z "$CURL_INITIAL_WAIT" ]] && CURL_INITIAL_WAIT=10
+sleep $CURL_INITIAL_WAIT
+
+for test in *.sh; do
+  echo "### test: $test ###"
+  source $test
+done
