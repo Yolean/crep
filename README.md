@@ -24,10 +24,22 @@ but with limitations:
 
 ## Using crep
 
-Put a bunch of test scripts named `*.sh` in ./test and...
+Put a bunch of test scripts named `*.sh` in `./test` and...
 ```
 docker run --rm -v $(pwd)/test:/test -e DEBUG=y -e CURL_INITIAL_WAIT=1 -e CURL_RETRY="--retry 2 --retry-delay 3" yolean/crep
 echo "$? == 0 means success"
+```
+
+Or to avoid volumes - recommended because it works with Docker over tcp - use a `Dockerfile` like
+```
+FROM yolean/crep
+
+COPY test /test
+
+# Or put these in docker-compose.yml, or just omit them and use defaults
+ENV DEBUG y
+ENV CURL_INITIAL_WAIT 1
+ENV CURL_RETRY "--retry 2 --retry-delay 3"
 ```
 
 ## Building
